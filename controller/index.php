@@ -80,7 +80,7 @@ function get_version(){
 } 
 //判断用户是否已经登录
 function is_login(){
-    $key = md5(USER.PASSWORD.getIP().'onenav');
+    $key = md5(USER.PASSWORD.'onenav');
     //获取session
     $session = $_COOKIE['key'];
     //如果已经成功登录
@@ -109,8 +109,8 @@ function base64($url){
 //获取版本号
 $version = get_version();
 //载入js扩展
-if( file_exists('templates/admin/static/extend.js') ) {
-    $onenav['extend'] = '<script src = "templates/admin/static/extend.js"></script>';
+if( file_exists('data/extend.js') ) {
+    $onenav['extend'] = '<script src = "data/extend.js"></script>';
 }
 else{
     $onenav['extend'] = '';

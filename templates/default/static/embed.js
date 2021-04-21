@@ -137,8 +137,7 @@ function admin_menu() {
                 
               },
               afterCopy: function() {
-                //msg('链接已复制！');
-                mdui.alert('链接已复制！');
+                layer.msg('链接已复制！');
               }
           });
             // 复制按钮END
@@ -197,7 +196,8 @@ $.contextMenu({
           },
           afterCopy: function() {
             //msg('链接已复制！');
-            mdui.alert('链接已复制！');
+            // mdui.alert('链接已复制！');
+            layer.msg('链接已复制！');
           }
       });
         // 复制按钮END
@@ -208,3 +208,40 @@ $.contextMenu({
 });
     // 加载游客右键菜单END
 };
+
+// 添加链接按钮
+$("#add").click(function(){
+  open_add_link();
+});
+
+function open_add_link(){
+  layer.open({
+    type: 2,
+    title: '添加链接',
+    maxmin: true,
+    shadeClose: true, //点击遮罩关闭层
+    area : ['800px' , '520px'],
+    content: '/index.php?c=admin&page=add_link_tpl'
+  });
+}
+//搜索框失去焦点
+function clean_search(){
+  $(".search").val('');
+  $(".search").blur();
+}
+//搜索框得到焦点
+function on_search(){
+  $(".search").focus();
+  $(".search").val('');
+}
+//快捷键支持
+// hotkeys('a,esc', function (event, handler){
+//   switch (handler.key) {
+//     case 'a': open_add_link();
+//       break;
+//     case 'esc': clean_search();
+//       break;
+    
+//     default: alert(event);
+//   }
+// });

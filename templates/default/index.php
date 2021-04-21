@@ -13,8 +13,7 @@
 	<link rel="stylesheet" href="https://libs.xiaoz.top/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="templates/<?php echo TEMPLATE; ?>/static/style.css?v=<?php echo $version; ?>">
 	<script src = 'https://libs.xiaoz.top/mdui/v1.0.1/js/mdui.min.js'></script>
-	<?php echo $onenav['extend']; ?>
-	
+	<!-- <script src="https://cdn.jsdelivr.net/npm/hotkeys-js@3.7.3/dist/hotkeys.min.js"></script> -->
 </head>
 <body class = "mdui-drawer-body-left mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded">
 	<!--导航工具-->
@@ -34,7 +33,15 @@
 			</div>
 		</div> -->
 		  <!-- 搜索框END -->
-		  <a href="https://github.com/helloxz/onenav" rel = "nofollow" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '查看 Github'}">
+		  <!-- 新版搜索框 -->
+		  	<div class="mdui-col-md-4 mdui-col-xs-6">
+				<div class="mdui-textfield mdui-textfield-floating-label">
+					<!-- <label class="mdui-textfield-label">输入书签关键词进行搜索</label> -->
+					<input class="mdui-textfield-input search" style = "color:#FFFFFF;" placeholder="输入书签关键词进行搜索" type="text" />
+				</div>
+			</div>
+			<!-- 新版搜索框END -->
+		  <a class = "mdui-hidden-xs" href="https://github.com/helloxz/onenav" rel = "nofollow" target="_blank" class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-tooltip="{content: '查看 Github'}">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 36 36" enable-background="new 0 0 36 36" xml:space="preserve" class="mdui-icon" style="width: 24px;height:24px;">
         <path fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff" d="M18,1.4C9,1.4,1.7,8.7,1.7,17.7c0,7.2,4.7,13.3,11.1,15.5
 	c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1
@@ -43,14 +50,33 @@
 	c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5
 	c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C34.3,8.7,27,1.4,18,1.4z"></path>
 	  </svg>
-	  <a href="/index.php?c=login" title = "登录OneNav" target="_blank" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">account_circle</i></a>
+	  <?php
+		if( is_login() ) {
+	  ?>	
+	  <a class = "mdui-hidden-xs" href="/index.php?c=admin" title = "后台管理" target="_blank" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">account_circle</i></a>
+	  <?php }else{ ?>
+		<a class = "mdui-hidden-xs" href="/index.php?c=login" title = "登录OneNav" target="_blank" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">account_circle</i></a>
+	  <?php } ?>
     </a>
 		</div>
 	</header>
 	<!--导航工具END-->
+	<!-- 添加按钮 -->
+	<?php
+		if( is_login() ) {
+	?>	
+	<div class="right-button mdui-hidden-xs" style="position: fixed;right:10px;bottom:80px;z-index:99;">
+		<div>
+		<button title = "快速添加链接" id = "add" class="mdui-fab mdui-color-theme-accent mdui-ripple mdui-fab-mini"><i class="mdui-icon material-icons">add</i></button>
+		</div>
+	</div>
+	<?php } ?>
+	<!-- 添加按钮END -->
 	<!-- 返回顶部按钮 -->
 	<div id="top"></div>
-	<div class="top mdui-shadow-10"><a href="javascript:;" title="返回顶部" onclick="gotop()"><i class="mdui-icon material-icons">arrow_drop_up</i></div>
+	<div class="top mdui-shadow-10">
+	<a href="javascript:;" title="返回顶部" onclick="gotop()"><i class="mdui-icon material-icons">arrow_drop_up</i>
+	</div>
 	<!-- 返回顶部END -->
 		<!--左侧抽屉导航-->
 	<!-- 默认抽屉栏在左侧 -->
@@ -81,14 +107,14 @@
 	<!--正文内容部分-->
 	<div class="mdui-container">
 		<!-- 搜索框 -->
-		<div class="mdui-row">
+		<!-- <div class="mdui-row">
 			<div class="mdui-col-xs-12">
 				<div class="mdui-textfield mdui-textfield-floating-label">
 					<label class="mdui-textfield-label">输入书签关键词进行搜索</label>
 					<input class="mdui-textfield-input search" type="text" />
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- 搜索框END -->
 		<div class="mdui-row">
 			<!-- 遍历分类目录 -->
@@ -153,11 +179,12 @@
 	<!--正文内容部分END-->
 	<!-- footer部分 -->
 	<footer>
-		© 2020 Powered by <a target = "_blank" href="https://github.com/helloxz/onenav" title = "简约导航/书签管理器" rel = "nofollow">OneNav</a>.The author is <a href="https://www.xiaoz.me/" target="_blank" title = "小z博客">xiaoz.me</a>
+		© 2021 Powered by <a target = "_blank" href="https://github.com/helloxz/onenav" title = "简约导航/书签管理器" rel = "nofollow">OneNav</a>.The author is <a href="https://www.xiaoz.me/" target="_blank" title = "小z博客">xiaoz.me</a>
 	</footer>
 	<!-- footerend -->
 </body>
 <script src = 'https://libs.xiaoz.top/jquery/2.2.4/jquery.min.js'></script>
+<script src="/static//layer/layer.js"></script>
 <script src = 'https://libs.xiaoz.top/jQuery-contextMenu/2.9.2/jquery.contextMenu.min.js'></script>
 <script src = 'https://libs.xiaoz.top/clipBoard.js/clipBoard.min.js'></script>
 <script src = "templates/<?php echo TEMPLATE; ?>/static/holmes.js"></script>
@@ -165,4 +192,5 @@
 <script>
 <?php echo $onenav['right_menu']; ?>
 </script>
+<?php echo $onenav['extend']; ?>
 </html>

@@ -6,7 +6,19 @@
 //检查认证
 check_auth($site_setting['user'],$site_setting['password']);
 
-
+//获取版本号
+function get_version(){
+    if( file_exists('version.txt') ) {
+        $version = @file_get_contents('version.txt');
+        return $version;
+    }
+    else{
+        $version = 'null';
+        return $version;
+    }
+}
+//获取版本号
+$version = get_version();
 
 $page = empty($_GET['page']) ? 'index' : $_GET['page'];
 //如果页面是修改edit_category
@@ -46,9 +58,22 @@ if ($page == 'edit_link') {
 }
 
 //如果页面是添加链接页面
-if ($page == 'add_link') {
+if ( ($page == 'add_link') || ($page == 'add_link_tpl') || ($page == 'add_quick_tpl') ) {
     //查询所有分类信息
-    $categorys = $db->select('on_categorys','*',[ 'ORDER'  =>  ['weigth'    =>  'DESC'] ]);
+    $categorys = $db->select('on_categorys','*',[ 'ORDER'  =>  ['weight'    =>  'DESC'] ]);
+    //checked按钮
+    if( $category['property'] == 1 ) {
+        $category['checked'] = 'checked';
+    }
+    else{
+        $category['checked'] = '';
+    }
+}
+
+//导入书签页面
+if ( $page == 'imp_link' ) {
+    //查询所有分类信息
+    $categorys = $db->select('on_categorys','*',[ 'ORDER'  =>  ['weight'    =>  'DESC'] ]);
     //checked按钮
     if( $category['property'] == 1 ) {
         $category['checked'] = 'checked';
@@ -66,6 +91,17 @@ if ($page == 'logout') {
     //跳转到首页
     header('location:/');
     exit;
+}
+
+//如果是自定义js页面
+if ($page == 'ext_js') {
+    //判断文件是否存在
+    if (is_file('data/extend.js')) {
+        $content = file_get_contents('data/extend.js');
+    }
+    else{
+        $content = '';
+    }
 }
 
 $page = $page.'.php';
@@ -99,12 +135,14 @@ function getIP() {
 
 function check_auth($user,$password){
     $ip = getIP();
-    $key = md5($user.$password.$ip.'onenav');
+    $key = md5($user.$password.'onenav');
     //获取cookie
     $cookie = $_COOKIE['key'];
     //如果cookie的值和计算的key不一致，则没有权限
     if( $cookie != $key ){
-        exit("<h3>认证失败，请<a href = 'index.php?c=login'>重新登录</a>！</h3>");
+        $msg = "<h3>认证失败，请<a href = 'index.php?c=login'>重新登录</a>！</h3>";
+        require('templates/admin/403.php');
+        exit;
     }
 }
 
